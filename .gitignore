@@ -4,3 +4,7 @@ TODO.md
 # ログファイル
 *.log
 logs/
+
+# 設定ファイル
+projects.yml
+.env

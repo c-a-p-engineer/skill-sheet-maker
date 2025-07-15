@@ -1,0 +1,79 @@
+projects:
+  - period: "2025/07〜現在"
+    title: "せん妄予防ケア支援Webアプリ開発"
+    overview: |
+      - 病院内スタッフ向けのせん妄予防支援用ダッシュボードを実装  
+      - 患者情報のリアルタイムモニタリング機能を追加  
+      - 認知機能チェック画面をNuxt.jsで新規構築
+    team_size: 4
+    development_style: "スクラム"
+    achievements:
+      - "初期リリースを2週間前倒し"  
+      - "ユーザー満足度調査で平均4.5点獲得"
+    os: "Linux（Ubuntu 20.04）"
+    db: "PostgreSQL 13"
+    web_server: "Nginx"
+    language: "Python"
+    framework: "Django REST Framework / Nuxt.js"
+    tools:
+      - "GitLab CI"
+      - "Docker"
+      - "Sentry"
+    phases:
+      - "要件定義"
+      - "設計"
+      - "実装"
+      - "単体テスト"
+      - "リリース"
+
+  - period: "2024/04〜2025/06"
+    title: "ECサイト基盤リプレイスプロジェクト"
+    overview: |
+      - 旧ECシステム（PHP／Monolith）をマイクロサービス化  
+      - バッチ処理をPythonに全面移行し、処理時間を50%短縮  
+      - AWS上にEKSクラスターを構築し、運用コストを30%削減
+    team_size: 12
+    development_style: "カンバン"
+    achievements:
+      - "KPI売上10%向上に貢献"  
+      - "デプロイ失敗率を90%削減"
+    os: "Windows Server 2019 / Amazon Linux"
+    db: "MySQL 8.0"
+    web_server: "Apache HTTPD"
+    language: "PHP / Python"
+    framework: "Laravel / Flask"
+    tools:
+      - "Jenkins"
+      - "Ansible"
+      - "Terraform"
+    phases:
+      - "基本設計"
+      - "詳細設計"
+      - "実装"
+      - "統合テスト"
+      - "運用保守"
+
+  - period: "2023/01〜2024/03"
+    title: "売上分析ダッシュボード構築"
+    overview: |
+      - BIツール連携による売上データ集計基盤を構築  
+      - Looker Studio上でカスタムレポートを20種作成  
+      - データパイプラインをAirflowで自動化
+    team_size: 5
+    development_style: "ウォーターフォール"
+    achievements:
+      - "レポート作成時間を80%短縮"  
+      - "経営層の意思決定速度向上に寄与"
+    os: "CentOS 7"
+    db: "BigQuery / PostgreSQL"
+    web_server: "－"
+    language: "Python"
+    framework: "Apache Airflow"
+    tools:
+      - "GCP"
+      - "Looker Studio"
+      - "dbt"
+    phases:
+      - "要件定義"
+      - "実装"
+      - "総合テスト"
