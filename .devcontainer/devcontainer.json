@@ -1,42 +1,16 @@
 {
-  "name": "Python (Dev Container)",
-  "image": "mcr.microsoft.com/devcontainers/python:3.13-bookworm",
-  "remoteUser": "root",
-  "customizations": {
-    "vscode": {
-      "settings": {
-        "python.analysis.typeCheckingMode": "basic",
-        "python.analysis.autoImportCompletions": true,
-        "python.linting.enabled": true,
-        "python.linting.pylintEnabled": true,
-        "editor.formatOnSave": true,
-        "[python]": {
-          "editor.defaultFormatter": "ms-python.black-formatter",
-          "editor.codeActionsOnSave": {
-            "source.organizeImports": "explicit"
-          }
-        },
-        "python.formatting.provider": "none",
-        "isort.args": [
-          "--profile",
-          "black"
-        ]
-      },
-      "extensions": [
-        "saoudrizwan.claude-dev",
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "ms-python.pylint",
-        "ms-python.black-formatter",
-        "ms-python.isort",
-        "visualstudioexptteam.vscodeintellicode",
-        "streetsidesoftware.code-spell-checker",
-        "mechatroner.rainbow-csv"
-      ]
-    }
-  },
-  "containerEnv": {
-    "TZ": "Asia/Tokyo"
-  },
-  "postCreateCommand": "apt-get update && pip install --user -r requirements.txt",
+	"name": "Skill Sheet Maker",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"esbenp.prettier-vscode"
+			]
+		}
+	},
+	"postCreateCommand": "pip install -r requirements.txt",
+	"remoteUser": "vscode"
 }

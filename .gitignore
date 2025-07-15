@@ -1,10 +1,6 @@
-# ToDoリスト
-TODO.md
-
-# ログファイル
-*.log
-logs/
-
-# 設定ファイル
-projects.yml
 .env
+resume.pdf
+resume.md
+resume.html
+__pycache__/
+projects.yml

@@ -1,0 +1,25 @@
+---
+name: "山田 太郎"
+birthday: "1990-01-01"
+email: "taro.yamada@example.com"
+station: "東京駅"
+updated_at: "2025-07-15"
+---
+
+# 職務経歴サマリー
+
+ここに職務経歴のサマリーを記述します。
+
+# スキル
+
+- Python
+- JavaScript
+- HTML/CSS
+
+# 職務経歴
+
+（詳細はプロジェクト一覧を参照）
+
+# 自己PR
+
+ここに自己PRを記述します。

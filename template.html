@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>職務経歴書</title>
+<style>
+    @page {
+        size: {{ page_size }};
+        margin: {{ page_margin }};
+    }
+    body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; }
+    h1, h2, h3 {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+        margin-top: 20px;
+    }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+</style>
+</head>
+<body>
+
+<h1>職務経歴書</h1>
+<p style="text-align: right;">作成日: {{ resume.updated_at }}</p>
+<p>氏名: {{ resume.name }}</p>
+
+{{ resume.body | safe }}
+
+<h2>プロジェクト一覧</h2>
+{% for project in projects %}
+<h3>{{ project.title }} ({{ project.period }})</h3>
+<p><strong>役割:</strong> {{ project.development_style }}</p>
+<p><strong>規模:</strong> {{ project.team_size }}人</p>
+<p><strong>内容:</strong></p>
+<p>{{ project.overview | replace("\n", "<br>") | safe }}</p>
+<p><strong>使用技術:</strong><br>
+  OS: {{ project.os }}<br>
+  DB: {{ project.db }}<br>
+  Webサーバ: {{ project.web_server }}<br>
+  言語: {{ project.language }}<br>
+  フレームワーク: {{ project.framework }}<br>
+  ツール: {{ project.tools | join(", ") }}
+</p>
+<p><strong>工程:</strong> {{ project.phases | join("→") }}</p>
+{% endfor %}
+
+</body>
+</html>
