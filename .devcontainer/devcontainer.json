@@ -1,0 +1,23 @@
+{
+  "name": "Cline Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "cline.cline",
+        "eamodio.gitlens",
+        "ms-azuretools.vscode-docker",
+        "github.copilot",
+        "ms-vscode.makefile-tools"
+      ]
+    }
+  }
+}
