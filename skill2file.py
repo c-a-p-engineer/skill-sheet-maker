@@ -23,95 +23,78 @@ OUTPUT_HTML = os.path.join(BASE_DIR, 'resume.html')
 OUTPUT_PDF = os.path.join(BASE_DIR, 'resume.pdf')
 
 # --- 初期設定: resume.md / projects.yml がなければ example からコピー ---
-if not os.path.exists(RESUME_MD):
-    shutil.copy(RESUME_MD_EXAMPLE, RESUME_MD)
-    print(f"'{RESUME_MD}' を作成しました。")
+for path, example in [(RESUME_MD, RESUME_MD_EXAMPLE), (PROJECTS_YML, PROJECTS_YML_EXAMPLE)]:
+    if not os.path.exists(path):
+        shutil.copy(example, path)
+        print(f"'{path}' を作成しました。")
 
-if not os.path.exists(PROJECTS_YML):
-    shutil.copy(PROJECTS_YML_EXAMPLE, PROJECTS_YML)
-    print(f"'{PROJECTS_YML}' を作成しました。")
-
-# 1. resume.md からフロントマターと本文を読み込み
+# 1. resume.md から frontmatter と本文を読み込み
 with open(RESUME_MD, encoding='utf-8') as f:
     content = f.read()
 header, body = content.split('---', 2)[1:3]
-data = yaml.safe_load(header)
+
+data = yaml.safe_load(header) or {}
+
+# HTML 化
 data['body'] = markdown.markdown(body)
 
 # 2. 年齢自動計算
-birth = datetime.fromisoformat(data['birthday'])
-today = datetime.strptime(data['updated_at'], '%Y-%m-%d')
+birth = datetime.fromisoformat(data.get('birthday', datetime.now().isoformat()))
+today = datetime.strptime(data.get('updated_at', datetime.now().strftime('%Y-%m-%d')), '%Y-%m-%d')
 data['age'] = today.year - birth.year - ((today.month, today.day) < (birth.month, birth.day))
 
 # 3. projects.yml 読み込み & 期間計算
 with open(PROJECTS_YML, encoding='utf-8') as f:
     proj_data = yaml.safe_load(f)
-projects = proj_data.get('projects', [])
+projects = proj_data if isinstance(proj_data, list) else proj_data.get('projects', [])
 
-# No 自動付番 & 期間計算
 for idx, p in enumerate(projects, start=1):
     p['no'] = idx
-    
-    # 期間計算ロジック
+    # 期間計算
     try:
         start_str, end_str = p['period'].split('〜')
-        start_date = datetime.strptime(start_str, '%Y/%m')
-        
-        if end_str == '現在':
-            end_date = datetime.now()
-            p['period_str'] = f"{start_date.strftime('%Y年%m月')} 〜 現在"
+        start = datetime.strptime(start_str.strip(), '%Y/%m')
+        if end_str.strip() == '現在':
+            end = datetime.now()
+            p['period_str'] = f"{start.strftime('%Y年%m月')} 〜 現在"
         else:
-            end_date = datetime.strptime(end_str, '%Y/%m')
-            p['period_str'] = f"{start_date.strftime('%Y年%m月')} 〜 {end_date.strftime('%Y年%m月')}"
+            end = datetime.strptime(end_str.strip(), '%Y/%m')
+            p['period_str'] = f"{start.strftime('%Y年%m月')} 〜 {end.strftime('%Y年%m月')}"
+        months = (end.year - start.year)*12 + end.month - start.month + 1
+        years, mon = divmod(months, 12)
+        p['duration'] = ''.join([f"{years}年"*(years>0), f"{mon}ヶ月"*(mon>0)]) or '1ヶ月未満'
+    except Exception:
+        p['period_str'] = p.get('period', '')
+        p['duration'] = ''
+    # 概要リスト
+    p['overview_list'] = [l.strip().lstrip('- ').strip() for l in p.get('overview', '').split('\n') if l.strip()]
 
-        # 期間を計算（年と月）
-        delta_months = (end_date.year - start_date.year) * 12 + (end_date.month - start_date.month) + 1
-        years = delta_months // 12
-        months = delta_months % 12
-        
-        duration = []
-        if years > 0:
-            duration.append(f"{years}年")
-        if months > 0:
-            duration.append(f"{months}ヶ月")
-        
-        p['duration'] = "".join(duration) if duration else "1ヶ月未満"
+# 4. テンプレート読み込み & Jinja2 設定
+if not os.path.isfile(TEMPLATE_HTML):
+    raise FileNotFoundError(f"テンプレートファイルが見つかりません: {TEMPLATE_HTML}")
 
-    except (ValueError, AttributeError):
-        p['period_str'] = p.get('period', '') # パース失敗時はそのまま表示
-        p['duration'] = '' # 期間は空
-
-    # 概要をリストに変換
-    if 'overview' in p and isinstance(p['overview'], str):
-        lines = p['overview'].strip().split('\n')
-        p['overview_list'] = [line.strip().lstrip('- ').strip() for line in lines if line.strip()]
-    else:
-        p['overview_list'] = []
-
-data['projects'] = projects
-
-# 4. テンプレート読み込み & Jinja2 環境設定
 env = Environment(
     loader=FileSystemLoader(BASE_DIR),
     autoescape=False,
     keep_trailing_newline=True,
 )
-tpl = env.get_template(os.path.basename(TEMPLATE_HTML))
+template_name = os.path.basename(TEMPLATE_HTML)
+tpl = env.get_template(template_name)
 
-# 5. テンプレートにデータを渡してHTMLを生成
+# 5. レンダリング
 render_data = {
     'resume': data,
-    'projects': data['projects'],
+    'projects': projects,
     'page_size': page_size,
-    'page_margin': page_margin
+    'page_margin': page_margin,
 }
 html_body = tpl.render(**render_data)
 
-# 6. 中間HTMLファイルとして出力
+# 6. HTML 出力
 with open(OUTPUT_HTML, 'w', encoding='utf-8') as f:
     f.write(html_body)
 print(f"HTML を生成しました: {OUTPUT_HTML}")
 
-# 7. HTML を PDF へ
+# 7. PDF 出力
 HTML(string=html_body, base_url=BASE_DIR).write_pdf(OUTPUT_PDF)
 print(f"PDF を生成しました: {OUTPUT_PDF}")

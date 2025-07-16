@@ -4,6 +4,7 @@
 name: "山田 太郎"
 birthday: "1990-01-01" # YYYY-MM-DD形式
 email: "taro.yamada@example.com"
+phone: "0123-456-7890"
 station: "東京駅" # 最寄り駅
 updated_at: "2025-07-16" # YYYY-MM-DD形式。この書類の作成日
 ---

@@ -5,155 +5,119 @@
 <title>職務経歴書</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 <style>
-    @page {
-        size: {{ page_size }};
-        margin: {{ page_margin }};
-    }
-    body {
-        font-family: 'Noto Sans JP', sans-serif;
-        font-size: 10.5pt;
-        line-height: 1.6;
-    }
-    h1 {
-        font-size: 22pt;
-        text-align: center;
-        border-bottom: 2px solid #444;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-    }
-    h2 {
-        font-size: 14pt;
-        border-bottom: 1px solid #888;
-        padding-bottom: 6px;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-    h3 {
-        font-size: 12pt;
-        font-weight: bold;
-        border-left: 4px solid #4a90e2;
-        padding-left: 10px;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-    p {
-        margin: 5px 0;
-    }
-    strong {
-        font-weight: bold;
-        margin-right: 8px;
-    }
-    .project {
-        page-break-inside: avoid;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 15px;
-        margin-bottom: 20px;
-        background-color: #f9f9f9;
-    }
-    .project p {
-        margin-left: 15px;
-    }
-    .project ul {
-        margin-top: 5px;
-        margin-bottom: 10px;
-        padding-left: 35px;
-    }
-    .right-align {
-        text-align: right;
-    }
-    .qualifications {
-        background-color: #f3f8ff;
-        border: 1px solid #d1e3ff;
-        border-radius: 5px;
-        padding: 10px 20px;
-        margin-top: 15px;
-    }
-    .qualifications ul {
-        padding-left: 0;
-        list-style-type: none;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px 25px;
-    }
-    .tech-grid {
-        display: grid;
-        grid-template-columns: 100px 1fr 100px 1fr;
-        gap: 5px 15px; /* 縦の隙間を5px、横の隙間を15pxに設定 */
-        margin-top: 10px;
-    }
-    .tech-grid .category {
-        font-weight: bold;
-        background-color: #eaf2fd;
-        padding: 4px 8px;
-        border-radius: 4px;
-        text-align: center;
-    }
-    .tech-grid .details {
-        display: flex;
-        align-items: center;
-    }
-    .header-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-    }
-    .header-info .name {
-        font-size: 18pt;
-        font-weight: bold;
-    }
-    .header-info .station {
-        font-size: 10pt;
-    }
+    /* --- ページ設定 --- */
+    @page { size: {{ page_size }}; margin: {{ page_margin }}; }
+
+    /* --- ベーススタイル --- */
+    body { font-family: 'Noto Sans JP', sans-serif; font-size: 8.5pt; line-height: 1.4; }
+
+    /* --- 見出しスタイル --- */
+    h1 { font-size: 20pt; text-align: center; border-bottom: 2px solid #444; padding-bottom: 8px; margin-bottom: 4px; }
+    h2 { font-size: 12pt; border-bottom: 1px solid #888; padding-bottom: 5px; margin-top: 16px; margin-bottom: 8px; }
+    h3 { font-size: 11pt; font-weight: bold; border-left: 4px solid #4a90e2; padding-left: 8px; margin-top: 16px; margin-bottom: 8px; }
+
+    /* --- テキスト要素 --- */
+    p { margin: 4px 0; }
+    strong { font-weight: bold; margin-right: 6px; }
+
+    /* --- プロジェクトカード --- */
+    .project { page-break-inside: avoid; border: 1px solid #ddd; border-radius: 4px; padding: 10px; margin-bottom: 16px; transition: background-color 0.3s; }
+    .project:nth-of-type(odd) { background-color: #f9f9f9; }
+    .project:nth-of-type(even) { background-color: #eef6ff; }
+    .project:hover { background-color: #dbeeff; }
+    .project p { margin-left: 8px; }
+    .project ul { margin: 4px 0 8px; padding-left: 20px; }
+
+    /* --- 資格 (スキル) セクション --- */
+    .qualifications { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; padding: 0; list-style: none; }
+    .qualification-button { padding: 4px 8px; border: 1px solid #4a90e2; border-radius: 12px; background-color: #eaf2fd; font-size: 8pt; white-space: nowrap; }
+
+    /* --- 学歴セクション --- */
+    .education-list { margin: 4px 0 16px; padding-left: 16px; }
+    .education-list dt { font-weight: bold; }
+    .education-list dd { margin: 0 0 4px 12px; }
+
+    /* --- ユーティリティクラス --- */
+    .right-align { text-align: right; font-size: 7pt; }
+    .header-info { text-align: left; margin-bottom: 12px; }
+    .header-info .name { font-size: 16pt; font-weight: bold; display: block; margin-bottom: 4px; }
+    .contact-block { display: flex; justify-content: space-between; width: 100%; font-size: 7.5pt; }
+
+    /* --- 2カラムレイアウト --- */
+    .two-col { display: flex; }
+    .two-col .item { width: 50%; margin-left: 12px; }
+
+    /* --- 区切り線 --- */
+    .divider { border: none; border-top: 1px solid #ccc; margin: 8px 0; }
 </style>
 </head>
 <body>
-<p class="right-align">作成日: {{ resume.updated_at }}</p>
-<h1>職務経歴書</h1>
-<div class="header-info">
-    <span class="name">氏名: {{ resume.name }}</span>
-    <span class="station">最寄り駅: {{ resume.station }}</span>
-</div>
+    <p class="right-align">作成日: {{ resume.updated_at }}</p>
+    <h1>職務経歴書</h1>
+    <div class="header-info">
+        <span class="name">氏名: {{ resume.name }}</span>
+        <div class="contact-block">
+            <span>最寄り駅: {{ resume.station }}</span>
+            <span>メール: {{ resume.email }}</span>
+            <span>TEL: {{ resume.phone }}</span>
+        </div>
+    </div>
 
-{{ resume.body | safe }}
+    {% if resume.education %}
+    <h2>学歴</h2>
+    <dl class="education-list">
+        {% for edu in resume.education %}
+        <dt>{{ edu.period }} {{ edu.school }}</dt>
+        <dd>{{ edu.detail }}</dd>
+        {% endfor %}
+    </dl>
+    {% endif %}
 
-<h2>職務経歴</h2>
-{% for project in projects %}
-<div class="project">
-<h3>{{ project.title }}</h3>
-<p style="margin-left: 0; font-size: 10pt;">{{ project.period_str }} (参画期間: {{ project.duration }})</p>
-<p><strong>役割:</strong> {{ project.development_style }}</p>
-<p><strong>規模:</strong> {{ project.team_size }}人</p>
-<p><strong>概要:</strong></p>
-<ul>
-{% for item in project.overview_list %}
-    <li>{{ item }}</li>
-{% endfor %}
-</ul>
-<p><strong>実績:</strong></p>
-<ul>
-{% for achievement in project.achievements %}
-    <li>{{ achievement }}</li>
-{% endfor %}
-</ul>
-<p><strong>使用技術:</strong></p>
-<div class="tech-grid">
-    <div class="category">OS</div>
-    <div class="details">{{ project.os }}</div>
-    <div class="category">DB</div>
-    <div class="details">{{ project.db }}</div>
-    <div class="category">Webサーバ</div>
-    <div class="details">{{ project.web_server }}</div>
-    <div class="category">言語</div>
-    <div class="details">{{ project.language }}</div>
-    <div class="category">フレームワーク</div>
-    <div class="details">{{ project.framework }}</div>
-    <div class="category">ツール</div>
-    <div class="details">{{ project.tools | join(", ") }}</div>
-</div>
-<p><strong>工程:</strong> {{ project.phases | join(", ") }}</p>
-</div>
-{% endfor %}
+    {% if resume.skills %}
+    <h2>資格・スキル</h2>
+    <ul class="qualifications">
+        {% for skill in resume.skills %}
+        <li><span class="qualification-button">{{ skill }}</span></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
+    <h2>職務経歴</h2>
+    {% for project in projects %}
+    <div class="project">
+        <h3>{{ project.title }}</h3>
+        <div class="two-col">
+            <p class="item"><strong>No.:</strong> {{ project.no }}</p>
+            <p class="item"><strong>期間:</strong> {{ project.period_str }}</p>
+        </div>
+        <p><strong>概要:</strong></p>
+        <ul>
+            {% for line in project.overview_list %}
+            <li>{{ line }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>実績:</strong></p>
+        <ul>
+            {% for ach in project.achievements %}
+            <li>{{ ach }}</li>
+            {% endfor %}
+        </ul>
+        <hr class="divider">
+        <div class="two-col">
+            <p class="item"><strong>OS:</strong> {{ project.os }}</p>
+            <p class="item"><strong>DB:</strong> {{ project.db }}</p>
+        </div>
+        <div class="two-col">
+            <p class="item"><strong>Webサーバ:</strong> {{ project.web_server }}</p>
+            <p class="item"><strong>ミドルウェア:</strong> {{ project.middleware }}</p>
+        </div>
+        <div class="two-col">
+            <p class="item"><strong>言語:</strong> {{ project.language }}</p>
+            <p class="item"><strong>FW:</strong> {{ project.framework }}</p>
+        </div>
+        <p><strong>ツール:</strong> {% if project.tools is iterable and project.tools is not string %}{{ project.tools | join(", ") }}{% else %}{{ project.tools }}{% endif %}</p>
+        <p><strong>工程:</strong> {% if project.phases is iterable and project.phases is not string %}{{ project.phases | join(", ") }}{% else %}{{ project.phases }}{% endif %}</p>
+    </div>
+    {% endfor %}
 </body>
 </html>
