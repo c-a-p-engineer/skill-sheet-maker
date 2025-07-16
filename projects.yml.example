@@ -1,79 +1,94 @@
+# 職務経歴を記載するファイルです。
+# このファイルをコピーして projects.yml を作成し、ご自身の経歴に合わせて編集してください。
+# 「-」で始まるブロックが1つのプロジェクトに対応します。
+
 projects:
-  - period: "2025/07〜現在"
-    title: "せん妄予防ケア支援Webアプリ開発"
+  # --- サンプル1: Webアプリケーション開発（リーダー経験あり） ---
+  - period: "2023/04〜現在"  # YYYY/MM形式で記載。終了していない場合は「〜現在」と記載
+    title: "大手ECサイトのバックエンド刷新プロジェクト"
+    role: "開発リーダー / バックエンドエンジニア" # 担当した役割（例: PM, PL, SE, PG）
     overview: |
-      - 病院内スタッフ向けのせん妄予防支援用ダッシュボードを実装  
-      - 患者情報のリアルタイムモニタリング機能を追加  
-      - 認知機能チェック画面をNuxt.jsで新規構築
-    team_size: 4
-    development_style: "スクラム"
+      - PHPで構築された旧来のモノリシックなECバックエンドを、Python(FastAPI)を用いたマイクロサービスアーキテクチャへ移行。
+      - 商品、在庫、注文管理などの主要ドメインを独立したサービスとして再設計・開発。
+      - 開発リーダーとしてメンバー3名のタスク管理、コードレビュー、技術的指導を担当。
+    team_size: 8  # チーム全体の人数
+    development_style: "アジャイル（スクラム）" # プロジェクト方式
     achievements:
-      - "初期リリースを2週間前倒し"  
-      - "ユーザー満足度調査で平均4.5点獲得"
-    os: "Linux（Ubuntu 20.04）"
-    db: "PostgreSQL 13"
+      - "APIの平均応答時間を500msから80msに短縮し、ユーザー体験を大幅に向上。"
+      - "マイクロサービス化により機能ごとの独立したデプロイが可能になり、開発サイクルを2週間から3日に短縮。"
+      - "担当チームのコード品質を向上させ、バグ発生率を前年比で40%削減。"
+    os: "Linux (Dockerコンテナ内)"
+    db: "PostgreSQL 14, Redis"
     web_server: "Nginx"
-    language: "Python"
-    framework: "Django REST Framework / Nuxt.js"
+    language: "Python 3.10"
+    framework: "FastAPI, Pydantic"
     tools:
-      - "GitLab CI"
       - "Docker"
+      - "Kubernetes (GKE)"
+      - "GitLab CI/CD"
       - "Sentry"
+      - "Prometheus, Grafana"
     phases:
       - "要件定義"
-      - "設計"
+      - "アーキテクチャ設計"
       - "実装"
-      - "単体テスト"
+      - "コードレビュー"
+      - "テスト"
       - "リリース"
+      - "運用・保守"
 
-  - period: "2024/04〜2025/06"
-    title: "ECサイト基盤リプレイスプロジェクト"
+  # --- サンプル2: 業務システム開発（ウォーターフォール） ---
+  - period: "2021/10〜2023/03"
+    title: "金融機関向け 勘定系システム連携バッチ開発"
+    role: "システムエンジニア(SE)"
     overview: |
-      - 旧ECシステム（PHP／Monolith）をマイクロサービス化  
-      - バッチ処理をPythonに全面移行し、処理時間を50%短縮  
-      - AWS上にEKSクラスターを構築し、運用コストを30%削減
-    team_size: 12
-    development_style: "カンバン"
-    achievements:
-      - "KPI売上10%向上に貢献"  
-      - "デプロイ失敗率を90%削減"
-    os: "Windows Server 2019 / Amazon Linux"
-    db: "MySQL 8.0"
-    web_server: "Apache HTTPD"
-    language: "PHP / Python"
-    framework: "Laravel / Flask"
-    tools:
-      - "Jenkins"
-      - "Ansible"
-      - "Terraform"
-    phases:
-      - "基本設計"
-      - "詳細設計"
-      - "実装"
-      - "統合テスト"
-      - "運用保守"
-
-  - period: "2023/01〜2024/03"
-    title: "売上分析ダッシュボード構築"
-    overview: |
-      - BIツール連携による売上データ集計基盤を構築  
-      - Looker Studio上でカスタムレポートを20種作成  
-      - データパイプラインをAirflowで自動化
-    team_size: 5
+      - COBOLで書かれた既存の夜間バッチ処理をJavaにリプレイス。
+      - 勘定系システムから抽出したデータを加工し、データウェアハウス（DWH）に連携するETL処理を実装。
+      - 詳細設計書、単体テスト仕様書の作成も担当。
+    team_size: 15
     development_style: "ウォーターフォール"
     achievements:
-      - "レポート作成時間を80%短縮"  
-      - "経営層の意思決定速度向上に寄与"
-    os: "CentOS 7"
-    db: "BigQuery / PostgreSQL"
-    web_server: "－"
-    language: "Python"
-    framework: "Apache Airflow"
+      - "バッチ処理時間を平均8時間から3時間に短縮し、日次データ分析の早期化に貢献。"
+      - "厳格な品質基準をクリアし、本番稼働後の障害発生件数ゼロを達成。"
+    os: "Red Hat Enterprise Linux"
+    db: "Oracle Database 19c"
+    web_server: "-" # 該当しない場合はハイフン
+    language: "Java 11, SQL, Shell Script"
+    framework: "Spring Batch"
     tools:
-      - "GCP"
-      - "Looker Studio"
-      - "dbt"
+      - "SVN"
+      - "Jenkins"
+      - "Jira"
     phases:
-      - "要件定義"
+      - "詳細設計"
       - "実装"
-      - "総合テスト"
+      - "単体テスト"
+      - "結合テスト"
+
+  # --- サンプル3: 短期プロジェクト（Webフロントエンド） ---
+  - period: "2021/07〜2021/09"
+    title: "新製品発表キャンペーンサイト制作"
+    role: "フロントエンドエンジニア"
+    overview: |
+      - Next.jsとTypeScriptを用いて、アニメーションを多用したインタラクティブなキャンペーンサイトを構築。
+      - GSAPライブラリを導入し、スクロール連動のアニメーションを実装。
+      - CMS(Contentful)と連携し、お知らせや製品情報を動的に表示。
+    team_size: 3
+    development_style: "カンバン"
+    achievements:
+      - "高いデザイン要求を満たし、クライアントから高評価を獲得。"
+      - "Google PageSpeed Insightsでモバイル・PC共に95点以上を記録。"
+    os: "macOS (開発環境)"
+    db: "-"
+    web_server: "Vercel"
+    language: "TypeScript"
+    framework: "Next.js, React"
+    tools:
+      - "Contentful"
+      - "GSAP"
+      - "Figma"
+      - "GitHub Actions"
+    phases:
+      - "実装"
+      - "テスト"
+      - "リリース"

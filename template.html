@@ -3,46 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <title>職務経歴書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
 <style>
     @page {
         size: {{ page_size }};
         margin: {{ page_margin }};
     }
-    body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; }
-    h1, h2, h3 {
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 5px;
-        margin-top: 20px;
+    body {
+        font-family: 'Noto Sans JP', sans-serif;
+        font-size: 10.5pt;
+        line-height: 1.6;
     }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
+    h1 {
+        font-size: 22pt;
+        text-align: center;
+        border-bottom: 2px solid #444;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+    h2 {
+        font-size: 14pt;
+        border-bottom: 1px solid #888;
+        padding-bottom: 6px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    h3 {
+        font-size: 12pt;
+        font-weight: bold;
+        border-left: 4px solid #4a90e2;
+        padding-left: 10px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    p {
+        margin: 5px 0;
+    }
+    strong {
+        font-weight: bold;
+        margin-right: 8px;
+    }
+    .project {
+        page-break-inside: avoid;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+    .project p {
+        margin-left: 15px;
+    }
+    .project ul {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        padding-left: 35px;
+    }
+    .right-align {
+        text-align: right;
+    }
+    .qualifications {
+        background-color: #f3f8ff;
+        border: 1px solid #d1e3ff;
+        border-radius: 5px;
+        padding: 10px 20px;
+        margin-top: 15px;
+    }
+    .qualifications ul {
+        padding-left: 0;
+        list-style-type: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 25px;
+    }
+    .tech-grid {
+        display: grid;
+        grid-template-columns: 100px 1fr 100px 1fr;
+        gap: 5px 15px; /* 縦の隙間を5px、横の隙間を15pxに設定 */
+        margin-top: 10px;
+    }
+    .tech-grid .category {
+        font-weight: bold;
+        background-color: #eaf2fd;
+        padding: 4px 8px;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .tech-grid .details {
+        display: flex;
+        align-items: center;
+    }
+    .header-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+    .header-info .name {
+        font-size: 18pt;
+        font-weight: bold;
+    }
+    .header-info .station {
+        font-size: 10pt;
+    }
 </style>
 </head>
 <body>
-
+<p class="right-align">作成日: {{ resume.updated_at }}</p>
 <h1>職務経歴書</h1>
-<p style="text-align: right;">作成日: {{ resume.updated_at }}</p>
-<p>氏名: {{ resume.name }}</p>
+<div class="header-info">
+    <span class="name">氏名: {{ resume.name }}</span>
+    <span class="station">最寄り駅: {{ resume.station }}</span>
+</div>
 
 {{ resume.body | safe }}
 
-<h2>プロジェクト一覧</h2>
+<h2>職務経歴</h2>
 {% for project in projects %}
-<h3>{{ project.title }} ({{ project.period }})</h3>
+<div class="project">
+<h3>{{ project.title }}</h3>
+<p style="margin-left: 0; font-size: 10pt;">{{ project.period_str }} (参画期間: {{ project.duration }})</p>
 <p><strong>役割:</strong> {{ project.development_style }}</p>
 <p><strong>規模:</strong> {{ project.team_size }}人</p>
-<p><strong>内容:</strong></p>
-<p>{{ project.overview | replace("\n", "<br>") | safe }}</p>
-<p><strong>使用技術:</strong><br>
-  OS: {{ project.os }}<br>
-  DB: {{ project.db }}<br>
-  Webサーバ: {{ project.web_server }}<br>
-  言語: {{ project.language }}<br>
-  フレームワーク: {{ project.framework }}<br>
-  ツール: {{ project.tools | join(", ") }}
-</p>
-<p><strong>工程:</strong> {{ project.phases | join("→") }}</p>
+<p><strong>概要:</strong></p>
+<ul>
+{% for item in project.overview_list %}
+    <li>{{ item }}</li>
+{% endfor %}
+</ul>
+<p><strong>実績:</strong></p>
+<ul>
+{% for achievement in project.achievements %}
+    <li>{{ achievement }}</li>
+{% endfor %}
+</ul>
+<p><strong>使用技術:</strong></p>
+<div class="tech-grid">
+    <div class="category">OS</div>
+    <div class="details">{{ project.os }}</div>
+    <div class="category">DB</div>
+    <div class="details">{{ project.db }}</div>
+    <div class="category">Webサーバ</div>
+    <div class="details">{{ project.web_server }}</div>
+    <div class="category">言語</div>
+    <div class="details">{{ project.language }}</div>
+    <div class="category">フレームワーク</div>
+    <div class="details">{{ project.framework }}</div>
+    <div class="category">ツール</div>
+    <div class="details">{{ project.tools | join(", ") }}</div>
+</div>
+<p><strong>工程:</strong> {{ project.phases | join(", ") }}</p>
+</div>
 {% endfor %}
 
 </body>

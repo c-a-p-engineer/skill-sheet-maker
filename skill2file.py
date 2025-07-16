@@ -43,14 +43,50 @@ birth = datetime.fromisoformat(data['birthday'])
 today = datetime.strptime(data['updated_at'], '%Y-%m-%d')
 data['age'] = today.year - birth.year - ((today.month, today.day) < (birth.month, birth.day))
 
-# 3. projects.yml 読み込み
+# 3. projects.yml 読み込み & 期間計算
 with open(PROJECTS_YML, encoding='utf-8') as f:
     proj_data = yaml.safe_load(f)
 projects = proj_data.get('projects', [])
 
-# No 自動付番
+# No 自動付番 & 期間計算
 for idx, p in enumerate(projects, start=1):
     p['no'] = idx
+    
+    # 期間計算ロジック
+    try:
+        start_str, end_str = p['period'].split('〜')
+        start_date = datetime.strptime(start_str, '%Y/%m')
+        
+        if end_str == '現在':
+            end_date = datetime.now()
+            p['period_str'] = f"{start_date.strftime('%Y年%m月')} 〜 現在"
+        else:
+            end_date = datetime.strptime(end_str, '%Y/%m')
+            p['period_str'] = f"{start_date.strftime('%Y年%m月')} 〜 {end_date.strftime('%Y年%m月')}"
+
+        # 期間を計算（年と月）
+        delta_months = (end_date.year - start_date.year) * 12 + (end_date.month - start_date.month) + 1
+        years = delta_months // 12
+        months = delta_months % 12
+        
+        duration = []
+        if years > 0:
+            duration.append(f"{years}年")
+        if months > 0:
+            duration.append(f"{months}ヶ月")
+        
+        p['duration'] = "".join(duration) if duration else "1ヶ月未満"
+
+    except (ValueError, AttributeError):
+        p['period_str'] = p.get('period', '') # パース失敗時はそのまま表示
+        p['duration'] = '' # 期間は空
+
+    # 概要をリストに変換
+    if 'overview' in p and isinstance(p['overview'], str):
+        lines = p['overview'].strip().split('\n')
+        p['overview_list'] = [line.strip().lstrip('- ').strip() for line in lines if line.strip()]
+    else:
+        p['overview_list'] = []
 
 data['projects'] = projects
 
